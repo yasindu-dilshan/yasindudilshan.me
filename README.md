@@ -1,4 +1,4 @@
-# yasindudilshan.dev
+# yasindudilshan.me
 
 Personal website & technical blog — built with Next.js 15, Tailwind CSS, and MDX.
 
