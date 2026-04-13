@@ -3,7 +3,7 @@ export const siteConfig = {
   title: "Yasindu Dilshan — Backend Engineer",
   description:
     "Software Engineer specializing in backend development and fintech. Writing about Java, Spring Boot, system design, and building reliable systems for global markets.",
-  url: "https://yasindudilshan.dev",
+  url: "https://yasindudilshan.me",
   author: {
     name: "Yasindu Dilshan",
     role: "Software Engineer",
