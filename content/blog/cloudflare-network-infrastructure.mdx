@@ -23,7 +23,7 @@ featured: true
 
 ![overall](/images/cloudflare-network-infrastructure/overall.png)
 
-## CHAPTER 1 — "Above the Nail Salon"
+## 1 — "Above the Nail Salon"
 
 ### 1.1 — The Founding Story
 
@@ -49,9 +49,7 @@ Third, every server runs every service. There is no separation between CDN nodes
 
 These three choices — commodity hardware, anycast routing, and a homogeneous software stack — created compounding returns that no specialized-hardware approach could replicate. The chapters that follow trace exactly how that compounding played out.
 
----
-
-## CHAPTER 2 — "The Scaling Machine"
+## 2 — "The Scaling Machine"
 
 ### 2.1 — Data Center Expansion
 
@@ -69,9 +67,9 @@ Connecting these locations, Cloudflare built a dedicated global backbone using D
 
 Network capacity reached approximately thirty terabits per second in 2019, thirty-five in early 2020, a hundred by September 2021, three hundred and twenty-one by Q4 2024, and five hundred on April 10, 2026. That figure represents five thousand external hundred-gigabit ports — the sum of every connection facing a transit provider, private peer, Internet exchange, or Cloudflare Network Interconnect port. It is provisioned capacity, not peak delivered traffic. On any given day, utilization is a fraction of that total. The difference is deliberate — and it is the subject of the next chapter.
 
----
 
-## CHAPTER 3 — "The DDoS Budget"
+
+## 3 — "The DDoS Budget"
 
 ![ddos budget](/images/cloudflare-network-infrastructure/ddos_budget.png)
 
@@ -89,9 +87,9 @@ The foundation is software, not specialized hardware. Packets enter an XDP progr
 
 This contrasts with centralized scrubbing used by Arbor Networks and Akamai Prolexic, where traffic reroutes to dedicated facilities. Cloudflare's single-pass architecture processes DDoS mitigation, WAF, and bot detection on the same server in one pass — no backhauling, no separate appliances. That same architecture created an unexpected opportunity: if every server runs eBPF at wire speed, it can run customer application code too.
 
----
 
-## CHAPTER 4 — "From Cache to Compute"
+
+## 4 — "From Cache to Compute"
 
 ### 4.1 — The Workers Insight
 
@@ -103,9 +101,9 @@ R2 object storage provides an S3-compatible API with zero egress fees. For egres
 
 Workers AI runs over fifty models on serverless GPUs across a hundred and eighty-plus edge locations. Inference requests grew four thousand percent year over year, priced at zero-point-zero-one-one dollars per thousand neurons.
 
----
 
-## CHAPTER 5 — "The Economics of Free"
+
+## 5 — "The Economics of Free"
 
 ### 5.1 — From One Transit Bill to 13,000 Settlement-Free Peers
 
@@ -119,8 +117,8 @@ Blended bandwidth costs now sit around zero-point-zero-zero-seven dollars per gi
 
 Free-plan customers consume off-peak headroom, routed to wherever spare capacity exists rather than the nearest data center. Enterprise traffic gets priority routing; free-tier traffic fills capacity gaps. That free-tier traffic generates threat intelligence that improves security products sold to enterprise customers at premium prices.
 
----
 
-## CHAPTER 6 — "Conclusion"
+
+## 6 — "Conclusion"
 
 Sixteen years separate a Palo Alto office above a nail salon from five hundred terabits per second across three hundred and thirty cities. The distance was covered by three decisions made early and held consistently: commodity hardware, anycast routing, and a homogeneous software stack where every server runs every service. Each compounded the others. Scaling cities improved peering, peering lowered costs, lower costs funded free plans, free traffic trained security models, and those models protected paying enterprises. The DDoS budget, and the developer platform are not separate achievements — they are the same architectural bet, observed at different layers.
