@@ -1,0 +1,126 @@
+---
+title: "Cloudflare's Network Infrastructure: From Nail Salon to 500 Tbps Global Backbone"
+description: "A nail salon in Palo Alto. Eight employees. One transit provider. Sixteen years later, Cloudflare operates five hundred terabits per second of network capacity across three hundred and thirty cities, routes more than twenty percent of all web traffic, and autonomously mitigates thirty-one terabit-per-second DDoS attacks without a single engineer being paged."
+date: "2026-04-15"
+category: "Technology Documentary"
+tags:
+  [
+    "Cloudflare",
+    "Internet Infrastructure",
+    "DDoS Mitigation",
+    "Edge Computing",
+    "Content Delivery Network",
+    "Anycast Routing",
+    "Serverless Computing",
+    "Web Security",
+    "Peering Economics",
+    "Post-Quantum Cryptography",
+    "AI Agents",
+    "Cloudflare Workers",
+  ]
+featured: true
+---
+
+![overall](/images/cloudflare-network-infrastructure/overall.png)
+
+## CHAPTER 1 — "Above the Nail Salon"
+
+### 1.1 — The Founding Story
+
+In April 2026, Cloudflare crossed five hundred terabits per second of provisioned network capacity — enough to carry more than twenty percent of all web traffic across three hundred and thirty cities in a hundred and twenty-five countries. Sixteen years earlier, the company did not exist.
+
+Cloudflare began as a Harvard Business School project in January 2009, conceived by Matthew Prince and Michelle Zatlyn. That summer, they relocated to California and joined third co-founder Lee Holloway. Their office sat at 542 Emerson Street, Palo Alto — above a nail salon, next to a smoke shop.
+
+A two-point-one-million-dollar Series A from Venrock and Pelion Venture Partners in November 2009 provided initial funding. Eleven months later, in September 2010, the company launched publicly at TechCrunch Disrupt with fewer than ten employees, a handful of data center locations, and a single transit provider — nLayer Communications, now known as GTT. Total network throughput was negligible by today's standards.
+
+### 1.2 — The Bet That Shaped Everything
+
+![Cloudflare architecture](/images/cloudflare-network-infrastructure/arch_decisions.png)
+
+Three architectural decisions made by that small team would determine everything that followed.
+
+First, Cloudflare chose commodity hardware running unified software over specialized appliances. Every server in the fleet runs every service — caching, DNS resolution, DDoS mitigation, firewall processing, and the Workers developer platform. This homogeneous design simplified procurement, operations, and capacity planning from day one.
+
+Second, the company adopted anycast routing at the outset. Multiple data centers share the same IP addresses, and internet routers direct each request to the nearest location automatically. Every new data center joins the existing address space without requiring new IP allocations.
+
+Third, every server runs every service. There is no separation between CDN nodes, security appliances, and compute platforms. A single machine handles all functions in a single pass.
+
+![single_pass_arch](/images/cloudflare-network-infrastructure/single_pass_arch.png)
+
+These three choices — commodity hardware, anycast routing, and a homogeneous software stack — created compounding returns that no specialized-hardware approach could replicate. The chapters that follow trace exactly how that compounding played out.
+
+---
+
+## CHAPTER 2 — "The Scaling Machine"
+
+### 2.1 — Data Center Expansion
+
+Those three architectural bets — commodity hardware, anycast routing, homogeneous software — unlocked a specific kind of growth.
+
+According to Cloudflare, the company operated in twenty-three cities across fifteen countries by 2012. By the end of 2013, that number had quadrupled to sixty-two cities in thirty-three countries, serving one-point-five million customers. In 2018, the company opened thirty-one data centers in a single twenty-four-day stretch, pushing past a hundred and twenty locations and targeting two hundred cities across a hundred countries by year's end. Deployments reached into Kathmandu, Baghdad, Reykjavík, Ramallah, Thimphu, and Macau — placing edge infrastructure where populations had previously relied on distant servers. In Africa alone, Cloudflare deployed to Antananarivo, Dakar, Dar es Salaam, Kigali, Maputo, Monrovia, and Nairobi. One of the largest single-country expansions brought Cloudflare to more than twenty-five cities across Brazil.
+
+![scale](/images/cloudflare-network-infrastructure/scale.png)
+
+### 2.2 — The Backbone
+
+Connecting these locations, Cloudflare built a dedicated global backbone using Dense Wavelength Division Multiplexing across dark fiber and leased wavelengths — spanning six continents with transatlantic, transamerican, and transpacific cables.
+
+### 2.3 — The 500 Tbps Number
+
+Network capacity reached approximately thirty terabits per second in 2019, thirty-five in early 2020, a hundred by September 2021, three hundred and twenty-one by Q4 2024, and five hundred on April 10, 2026. That figure represents five thousand external hundred-gigabit ports — the sum of every connection facing a transit provider, private peer, Internet exchange, or Cloudflare Network Interconnect port. It is provisioned capacity, not peak delivered traffic. On any given day, utilization is a fraction of that total. The difference is deliberate — and it is the subject of the next chapter.
+
+---
+
+## CHAPTER 3 — "The DDoS Budget"
+
+![ddos budget](/images/cloudflare-network-infrastructure/ddos_budget.png)
+
+### 3.1 — Why Most of 500 Tbps Sits Idle
+
+That gap between provisioned capacity and daily utilization is not waste. Cloudflare calls it the "DDoS budget" — a deliberate buffer designed to absorb massive volumetric attacks without degrading service to legitimate traffic. If an attacker generates thirty-one terabits per second of malicious traffic, the defending network must absorb that volume while serving every legitimate request simultaneously. The record thirty-one-point-four terabit-per-second attack consumed approximately six-point-three percent of Cloudflare's total capacity.
+
+### 3.2 — The Attack Escalation
+
+Attack scale has escalated at an extraordinary rate. In October 2024, Cloudflare mitigated over a hundred hyper-volumetric L3/L4 attacks, multiple exceeding three terabits per second. During Halloween week 2024, a Mirai-variant botnet launched a five-point-six terabit-per-second attack — then the largest publicly disclosed DDoS attack in history. Records fell repeatedly in 2025: six-point-five terabits in late April, seven-point-three in mid-May, eleven-point-five from a UDP flood sourced primarily from Google Cloud infrastructure, twenty-nine-point-seven in October from the Aisuru botnet. In November, the Aisuru-Kimwolf botnet — an estimated one to four million compromised Android TV devices — launched a thirty-one-point-four terabit-per-second attack lasting thirty-five seconds. Detected and mitigated autonomously. No engineer paged. One of over five thousand attacks blocked that day. Cloudflare mitigated forty-seven-point-one million DDoS attacks in 2025 — five thousand three hundred and seventy-six per hour — more than double the twenty-one-point-three million blocked in 2024.
+
+### 3.3 — How eBPF Replaces Scrubbing Centers
+
+The foundation is software, not specialized hardware. Packets enter an XDP program chain managed by xdpd. The first program, l4drop, evaluates each packet against mitigation rules compiled as eBPF bytecode. Those rules come from dosd, the denial-of-service daemon on every server, which samples traffic, builds statistical tables of heaviest hitters, and broadcasts them across the data center through a multicast gossip protocol. When dosd detects an attack, it generates fingerprint permutations, identifies the best match, compiles it as eBPF bytecode, and drops packets at wire speed — within seconds, without human intervention. Quicksilver propagates rules to every server worldwide in seconds. Three tiers operate at different scales: dosd handles the vast majority of L3/L4 attacks on detecting servers, Gatebot coordinates global responses, and flowtrackd provides stateful TCP inspection for Magic Transit customers.
+
+This contrasts with centralized scrubbing used by Arbor Networks and Akamai Prolexic, where traffic reroutes to dedicated facilities. Cloudflare's single-pass architecture processes DDoS mitigation, WAF, and bot detection on the same server in one pass — no backhauling, no separate appliances. That same architecture created an unexpected opportunity: if every server runs eBPF at wire speed, it can run customer application code too.
+
+---
+
+## CHAPTER 4 — "From Cache to Compute"
+
+### 4.1 — The Workers Insight
+
+That recognition — that servers running eBPF for DDoS mitigation could also execute customer code — became Cloudflare Workers, launched in 2017. Workers runs V8 isolates, the same JavaScript engine powering Google Chrome, instead of containers or virtual machines. Cold start times come in under five milliseconds — roughly a hundred times faster than AWS Lambda. Cloudflare reduced effective cold starts to near zero by pre-warming Workers during TLS negotiation: when the ClientHello arrives, the system loads the Worker before the HTTP request follows. Each isolate consumes one-tenth the memory of a Node.js process. The platform supports JavaScript, TypeScript, Python, Rust, and WebAssembly, deploying to the entire global network in under thirty seconds.
+
+### 4.2 — The Full Stack at the Edge
+
+R2 object storage provides an S3-compatible API with zero egress fees. For egress-heavy workloads, Cloudflare reports cost reductions of up to eighty-seven percent compared to S3. SYBO, developer of Subway Surfers, saves sixty thousand dollars monthly using R2, according to Cloudflare. D1 brings SQLite to the edge supporting databases up to ten gigabytes. Workers KV delivers global key-value storage with hot reads between five hundred microseconds and ten milliseconds, scaling past a million requests per second. Durable Objects provide stateful serverless compute with embedded SQLite — the foundation for chat rooms, multiplayer games, and collaborative editing.
+
+Workers AI runs over fifty models on serverless GPUs across a hundred and eighty-plus edge locations. Inference requests grew four thousand percent year over year, priced at zero-point-zero-one-one dollars per thousand neurons.
+
+---
+
+## CHAPTER 5 — "The Economics of Free"
+
+### 5.1 — From One Transit Bill to 13,000 Settlement-Free Peers
+
+When Cloudflare launched in 2010 with nLayer as its sole transit provider, every byte carried a direct cost. Transit is billed at the ninety-fifth percentile of monthly utilization, and for a caching proxy, egress exceeds ingress by four to five times — the company pays for the larger direction. At benchmark rates of ten dollars per megabit per second per month in North America and Europe, scaling through transit alone would have made free plans and unmetered bandwidth impossible.
+
+Peering changed the equation. According to Cloudflare, by 2014 the company peered approximately forty-five percent of traffic globally across three thousand settlement-free sessions. By 2016, European locations reached sixty percent peering ratios, Middle Eastern locations hit a hundred percent, and African locations achieved ninety percent — despite African transit costing a hundred and forty times the North American benchmark. Using Cloudflare's relative cost framework, European transit costs ten units, Asian seventy, Latin American eighty, Australian a hundred and seventy. In 2016, six networks — HiNet, Korea Telecom, Optus, Telecom Argentina, Telefonica, and Telstra — represented less than six percent of traffic but consumed nearly fifty percent of total bandwidth costs.
+
+Blended bandwidth costs now sit around zero-point-zero-zero-seven dollars per gigabyte. As one analyst described it: the incremental cost is so low it is not worth metering for ninety-nine percent of users.
+
+### 5.2 — The Free-Tier Flywheel
+
+Free-plan customers consume off-peak headroom, routed to wherever spare capacity exists rather than the nearest data center. Enterprise traffic gets priority routing; free-tier traffic fills capacity gaps. That free-tier traffic generates threat intelligence that improves security products sold to enterprise customers at premium prices.
+
+---
+
+## CHAPTER 6 — "Conclusion"
+
+Sixteen years separate a Palo Alto office above a nail salon from five hundred terabits per second across three hundred and thirty cities. The distance was covered by three decisions made early and held consistently: commodity hardware, anycast routing, and a homogeneous software stack where every server runs every service. Each compounded the others. Scaling cities improved peering, peering lowered costs, lower costs funded free plans, free traffic trained security models, and those models protected paying enterprises. The DDoS budget, and the developer platform are not separate achievements — they are the same architectural bet, observed at different layers.
