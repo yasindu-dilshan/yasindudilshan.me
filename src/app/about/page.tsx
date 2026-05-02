@@ -12,9 +12,15 @@ export const metadata: Metadata = {
 
 const experience = [
   {
+    role: "Senior Software Engineer",
+    company: "GTN Tech",
+    period: "May 2026 — Present",
+    highlights: [],
+  },
+  {
     role: "Software Engineer",
     company: "GTN Tech",
-    period: "Jul 2023 — Present",
+    period: "Jul 2023 — Apr 2026",
     highlights: [
       "Designing event-driven solutions processing millions of historical stock data records daily with Kafka and Spring Boot",
       "Built financial metadata management microservice supporting 40+ formats with S3 storage and ETag caching",
@@ -63,7 +69,7 @@ export default function AboutPage() {
             About me
           </h1>
           <p className="text-lg text-[var(--muted)] leading-relaxed mb-4">
-            I&apos;m Yasindu Dilshan, a software engineer at{" "}  
+            I&apos;m Yasindu Dilshan, a senior software engineer at{" "}
             <span className="text-[var(--fg)] font-medium">GTN Tech </span>  in
             Sri Lanka, where I work on the Price &amp; Market Backend Team
             building systems that power global trading infrastructure.
@@ -108,8 +114,9 @@ export default function AboutPage() {
           <p>
             My journey at GTN started as an intern in 2021. What began as working
             on wrapper components quickly evolved into designing full
-            microservices architectures. Today, I own projects end-to-end — from
-            requirements analysis through production deployment.
+            microservices architectures. I was promoted to Senior Software
+            Engineer in May 2026, owning projects end-to-end — from requirements
+            analysis through production deployment.
           </p>
           <p>
             I&apos;m passionate about solving complex backend challenges:
