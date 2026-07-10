@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import remarkGfm from "remark-gfm";
@@ -13,7 +13,10 @@ import { siteConfig } from "@/lib/config";
 
 export async function generateStaticParams() {
   const posts = getAllPosts();
-  return posts.map((post) => ({ slug: post.slug }));
+  // External posts (e.g. Medium) live off-site — no internal page to render.
+  return posts
+    .filter((post) => !post.externalUrl)
+    .map((post) => ({ slug: post.slug }));
 }
 
 export async function generateMetadata({
@@ -51,6 +54,8 @@ export default async function BlogPost({
   const { slug } = await params;
   const post = getPostBySlug(slug);
   if (!post) notFound();
+  // External posts (e.g. Medium) have no local body — send the reader off-site.
+  if (post.externalUrl) redirect(post.externalUrl);
 
   return (
     <div className="max-w-3xl mx-auto px-6 pt-8 pb-16">
