@@ -14,6 +14,8 @@ export interface PostMeta {
   tags: string[];
   readingTime: string;
   featured?: boolean;
+  /** If set, the article lives elsewhere (e.g. Medium) and cards link out to it. */
+  externalUrl?: string;
 }
 
 export interface Post extends PostMeta {
@@ -40,8 +42,9 @@ export function getAllPosts(): PostMeta[] {
         date: data.date || new Date().toISOString(),
         category: data.category || "Uncategorized",
         tags: data.tags || [],
-        readingTime: stats.text,
+        readingTime: data.readingTime || stats.text,
         featured: data.featured || false,
+        externalUrl: data.externalUrl || undefined,
       } as PostMeta;
     })
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
@@ -64,8 +67,9 @@ export function getPostBySlug(slug: string): Post | null {
     date: data.date || new Date().toISOString(),
     category: data.category || "Uncategorized",
     tags: data.tags || [],
-    readingTime: stats.text,
+    readingTime: data.readingTime || stats.text,
     featured: data.featured || false,
+    externalUrl: data.externalUrl || undefined,
     content,
   };
 }

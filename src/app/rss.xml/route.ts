@@ -5,17 +5,18 @@ export async function GET() {
   const posts = getAllPosts();
 
   const itemsXml = posts
-    .map(
-      (post) => `
+    .map((post) => {
+      const link = post.externalUrl || `${siteConfig.url}/blog/${post.slug}`;
+      return `
     <item>
       <title><![CDATA[${post.title}]]></title>
-      <link>${siteConfig.url}/blog/${post.slug}</link>
-      <guid isPermaLink="true">${siteConfig.url}/blog/${post.slug}</guid>
+      <link>${link}</link>
+      <guid isPermaLink="true">${link}</guid>
       <description><![CDATA[${post.description}]]></description>
       <pubDate>${new Date(post.date).toUTCString()}</pubDate>
       <category>${post.category}</category>
-    </item>`
-    )
+    </item>`;
+    })
     .join("");
 
   const rss = `<?xml version="1.0" encoding="UTF-8"?>

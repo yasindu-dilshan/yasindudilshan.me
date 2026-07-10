@@ -5,12 +5,15 @@ import type { MetadataRoute } from "next";
 export default function sitemap(): MetadataRoute.Sitemap {
   const posts = getAllPosts();
 
-  const blogEntries = posts.map((post) => ({
-    url: `${siteConfig.url}/blog/${post.slug}`,
-    lastModified: new Date(post.date),
-    changeFrequency: "monthly" as const,
-    priority: 0.8,
-  }));
+  // Only index posts hosted on this site; external ones (e.g. Medium) belong to their host.
+  const blogEntries = posts
+    .filter((post) => !post.externalUrl)
+    .map((post) => ({
+      url: `${siteConfig.url}/blog/${post.slug}`,
+      lastModified: new Date(post.date),
+      changeFrequency: "monthly" as const,
+      priority: 0.8,
+    }));
 
   return [
     {
