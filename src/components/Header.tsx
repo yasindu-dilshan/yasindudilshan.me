@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { avatarImage } from "@/lib/avatar";
 import { usePathname } from "next/navigation";
 import { siteConfig } from "@/lib/config";
 import { ThemeToggle } from "./ThemeToggle";
@@ -15,7 +16,8 @@ export function Header() {
         <Link href="/" className="flex items-center gap-2.5 group">
           <div className="relative w-8 h-8 rounded-full overflow-hidden border-2 border-[var(--border-c)] group-hover:border-[var(--accent)] transition-colors">
             <Image
-              src="/images/avatar.jpg"
+              src={avatarImage}
+              quality={95}
               alt={siteConfig.name}
               fill
               className="object-cover"

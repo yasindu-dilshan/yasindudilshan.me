@@ -2,6 +2,7 @@ import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
 import readingTime from "reading-time";
+import { getImageSize } from "./imageSize";
 
 const CONTENT_DIR = path.join(process.cwd(), "content/blog");
 
@@ -14,6 +15,12 @@ export interface PostMeta {
   tags: string[];
   readingTime: string;
   featured?: boolean;
+  /** Thumbnail shown at the right of the article card, Medium-style. */
+  coverImage?: string;
+  /** Intrinsic size of `coverImage`, read from the file at build time so the
+   *  card can render it at its own aspect ratio rather than matting it. */
+  coverWidth?: number;
+  coverHeight?: number;
   /** If set, the article lives elsewhere (e.g. Medium) and cards link out to it. */
   externalUrl?: string;
 }
@@ -34,6 +41,7 @@ export function getAllPosts(): PostMeta[] {
       const fileContent = fs.readFileSync(filePath, "utf-8");
       const { data, content } = matter(fileContent);
       const stats = readingTime(content);
+      const coverSize = data.coverImage ? getImageSize(data.coverImage) : null;
 
       return {
         slug,
@@ -44,6 +52,9 @@ export function getAllPosts(): PostMeta[] {
         tags: data.tags || [],
         readingTime: data.readingTime || stats.text,
         featured: data.featured || false,
+        coverImage: data.coverImage || undefined,
+        coverWidth: coverSize?.width,
+        coverHeight: coverSize?.height,
         externalUrl: data.externalUrl || undefined,
       } as PostMeta;
     })
@@ -59,6 +70,7 @@ export function getPostBySlug(slug: string): Post | null {
   const fileContent = fs.readFileSync(filePath, "utf-8");
   const { data, content } = matter(fileContent);
   const stats = readingTime(content);
+  const coverSize = data.coverImage ? getImageSize(data.coverImage) : null;
 
   return {
     slug,
@@ -69,6 +81,9 @@ export function getPostBySlug(slug: string): Post | null {
     tags: data.tags || [],
     readingTime: data.readingTime || stats.text,
     featured: data.featured || false,
+    coverImage: data.coverImage || undefined,
+    coverWidth: coverSize?.width,
+    coverHeight: coverSize?.height,
     externalUrl: data.externalUrl || undefined,
     content,
   };

@@ -3,6 +3,7 @@ title: "Cloudflare's Network Infrastructure: From Nail Salon to 500 Tbps Global 
 description: "A nail salon in Palo Alto. Eight employees. One transit provider. Sixteen years later, Cloudflare operates five hundred terabits per second of network capacity across three hundred and thirty cities, routes more than twenty percent of all web traffic, and autonomously mitigates thirty-one terabit-per-second DDoS attacks without a single engineer being paged."
 date: "2026-04-15"
 category: "Technology Documentary"
+coverImage: "/images/blog/cloudflare-network-infrastructure/cover-single-pass-arch.png"
 tags:
   [
     "Cloudflare",
@@ -21,7 +22,7 @@ tags:
 featured: true
 ---
 
-![overall](/images/cloudflare-network-infrastructure/overall.png)
+![overall](/images/blog/cloudflare-network-infrastructure/overall.png)
 
 ## 1 — "Above the Nail Salon"
 
@@ -35,7 +36,7 @@ A two-point-one-million-dollar Series A from Venrock and Pelion Venture Partners
 
 ### 1.2 — The Bet That Shaped Everything
 
-![Cloudflare architecture](/images/cloudflare-network-infrastructure/arch_decisions.png)
+![Cloudflare architecture](/images/blog/cloudflare-network-infrastructure/arch_decisions.png)
 
 Three architectural decisions made by that small team would determine everything that followed.
 
@@ -45,7 +46,7 @@ Second, the company adopted anycast routing at the outset. Multiple data centers
 
 Third, every server runs every service. There is no separation between CDN nodes, security appliances, and compute platforms. A single machine handles all functions in a single pass.
 
-![single_pass_arch](/images/cloudflare-network-infrastructure/single_pass_arch.png)
+![single_pass_arch](/images/blog/cloudflare-network-infrastructure/single_pass_arch.png)
 
 These three choices — commodity hardware, anycast routing, and a homogeneous software stack — created compounding returns that no specialized-hardware approach could replicate. The chapters that follow trace exactly how that compounding played out.
 
@@ -57,7 +58,7 @@ Those three architectural bets — commodity hardware, anycast routing, homogene
 
 According to Cloudflare, the company operated in twenty-three cities across fifteen countries by 2012. By the end of 2013, that number had quadrupled to sixty-two cities in thirty-three countries, serving one-point-five million customers. In 2018, the company opened thirty-one data centers in a single twenty-four-day stretch, pushing past a hundred and twenty locations and targeting two hundred cities across a hundred countries by year's end. Deployments reached into Kathmandu, Baghdad, Reykjavík, Ramallah, Thimphu, and Macau — placing edge infrastructure where populations had previously relied on distant servers. In Africa alone, Cloudflare deployed to Antananarivo, Dakar, Dar es Salaam, Kigali, Maputo, Monrovia, and Nairobi. One of the largest single-country expansions brought Cloudflare to more than twenty-five cities across Brazil.
 
-![scale](/images/cloudflare-network-infrastructure/scale.png)
+![scale](/images/blog/cloudflare-network-infrastructure/scale.png)
 
 ### 2.2 — The Backbone
 
@@ -71,7 +72,7 @@ Network capacity reached approximately thirty terabits per second in 2019, thirt
 
 ## 3 — "The DDoS Budget"
 
-![ddos budget](/images/cloudflare-network-infrastructure/ddos_budget.png)
+![ddos budget](/images/blog/cloudflare-network-infrastructure/ddos_budget.png)
 
 ### 3.1 — Why Most of 500 Tbps Sits Idle
 

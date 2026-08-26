@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import { avatarImage } from "@/lib/avatar";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
@@ -91,7 +92,8 @@ export default async function BlogPost({
           <div className="flex items-center gap-3 pb-6 border-b border-[var(--border-c)]">
             <div className="relative w-10 h-10 rounded-full overflow-hidden">
               <Image
-                src="/images/avatar.jpg"
+                src={avatarImage}
+                quality={95}
                 alt={siteConfig.name}
                 fill
                 className="object-cover"
@@ -143,7 +145,8 @@ export default async function BlogPost({
           <div className="flex items-start gap-4">
             <div className="relative w-14 h-14 rounded-full overflow-hidden flex-shrink-0">
               <Image
-                src="/images/avatar.jpg"
+                src={avatarImage}
+                quality={95}
                 alt={siteConfig.name}
                 fill
                 className="object-cover"
