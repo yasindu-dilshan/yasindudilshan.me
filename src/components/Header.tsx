@@ -41,6 +41,7 @@ export function Header() {
               <Link
                 key={item.href}
                 href={item.href}
+                aria-current={isActive ? "page" : undefined}
                 className={`px-3 py-1.5 rounded-md text-sm transition-colors ${
                   isActive
                     ? "text-[var(--accent)] font-medium"

@@ -1,5 +1,12 @@
 @import "tailwindcss";
 
+/* Theme is driven by a .dark class on <html> (set by the inline script in the
+   root layout and flipped by ThemeToggle). Tailwind v4 defaults the dark:
+   variant to prefers-color-scheme, which left every dark: utility keyed to the
+   OS while the CSS variables followed the class — so the toggle recoloured the
+   page but not the category badges or gradient tiles. Bind dark: to the class. */
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme inline {
   --color-background: var(--bg);
   --color-foreground: var(--fg);
@@ -9,6 +16,7 @@
   --color-border: var(--border-c);
   --color-muted: var(--muted);
   --color-muted2: var(--muted2);
+  --color-accent-fg: var(--accent-fg);
 }
 
 :root {
@@ -19,7 +27,8 @@
   --surface: #FFFFFF;
   --border-c: #E7E5E4;
   --muted: #57534E;
-  --muted2: #A8A29E;
+  --muted2: #6F6A65;
+  --accent-fg: #FFFFFF;
   --code-bg: #F5F5F4;
 }
 
@@ -31,37 +40,40 @@
   --surface: #1C1917;
   --border-c: #292524;
   --muted: #A8A29E;
-  --muted2: #78716C;
+  --muted2: #918983;
+  --accent-fg: #0C0A09;
   --code-bg: #1C1917;
 }
 
 body {
   background: var(--bg);
   color: var(--fg);
-  font-family: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
   transition: background 0.3s ease, color 0.3s ease;
 }
 
 h1, h2 {
-  font-family: 'DM Serif Display', ui-serif, Georgia, serif;
+  font-family: var(--font-heading), ui-serif, Georgia, serif;
 }
 
 h3, h4, h5, h6 {
-  font-family: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
 }
 
 code, pre, kbd {
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-family: var(--font-mono), ui-monospace, monospace;
 }
 
-.font-heading { font-family: 'DM Serif Display', ui-serif, Georgia, serif; }
-.font-body { font-family: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif; }
-.font-code { font-family: 'JetBrains Mono', ui-monospace, monospace; }
+.font-heading { font-family: var(--font-heading), ui-serif, Georgia, serif; }
+.font-body { font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif; }
+.font-code { font-family: var(--font-mono), ui-monospace, monospace; }
 
 .prose {
   font-size: 1.0625rem;
   line-height: 1.8;
 }
+
+.prose h2, .prose h3, .prose h4 { scroll-margin-top: 5rem; }
 
 .prose h2 {
   margin-top: 2.5em;
@@ -131,4 +143,64 @@ code, pre, kbd {
 .anim-d3 { animation-delay: 0.3s; opacity: 0; }
 .anim-d4 { animation-delay: 0.4s; opacity: 0; }
 
-::selection { background: var(--accent); color: white; }
+::selection { background: var(--accent); color: var(--accent-fg); }
+
+/* Keyboard focus. Several controls sit on accent or surface fills where the
+   browser default outline is nearly invisible, so make one explicit ring. */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Skip link: off-screen until focused. */
+.skip-link {
+  position: absolute;
+  left: 0.75rem;
+  top: -3rem;
+  z-index: 100;
+  padding: 0.5rem 0.875rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  border-radius: 0.5rem;
+  background: var(--accent);
+  color: var(--accent-fg);
+  transition: top 0.15s ease;
+}
+.skip-link:focus {
+  top: 0.75rem;
+}
+
+/* Comfortable measure. The container is 768px wide, which runs body copy to
+   ~85 characters per line; 70ch keeps it in the readable 60-75 band while
+   leaving images and code blocks free to use the full width. */
+.prose > p,
+.prose > ul,
+.prose > ol,
+.prose > blockquote {
+  max-width: 70ch;
+}
+
+/* The fade-up classes start at opacity 0 and rely on the animation to reveal
+   content. If animation is suppressed, that would leave sections blank — so
+   opt out of the motion and show everything immediately instead. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .animate-fade-up,
+  .anim-d1,
+  .anim-d2,
+  .anim-d3,
+  .anim-d4 {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

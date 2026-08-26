@@ -1,9 +1,37 @@
 import type { Metadata } from "next";
 import Script from "next/script";
+import { DM_Serif_Display, Plus_Jakarta_Sans, JetBrains_Mono } from "next/font/google";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { siteConfig } from "@/lib/config";
 import "./globals.css";
+
+/**
+ * Self-hosted at build time rather than fetched from fonts.googleapis.com.
+ * That removes a render-blocking stylesheet plus two third-party connections
+ * from the critical path, and next/font generates a metric-matched fallback so
+ * text does not reflow when the real face arrives.
+ */
+const fontHeading = DM_Serif_Display({
+  subsets: ["latin"],
+  weight: "400",
+  display: "swap",
+  variable: "--font-heading",
+});
+
+const fontBody = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+  variable: "--font-body",
+});
+
+const fontMono = JetBrains_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  display: "swap",
+  variable: "--font-mono",
+});
 
 export const metadata: Metadata = {
   title: {
@@ -32,7 +60,11 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={`${fontHeading.variable} ${fontBody.variable} ${fontMono.variable}`}
+    >
       <head>
         {/* Google tag (gtag.js) */}
         <Script
@@ -48,17 +80,6 @@ export default function RootLayout({
             gtag('config', 'G-0RYKF7P4B8');
           `}
         </Script>
-        {/* Google Fonts */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
-        <link
-          href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
-          rel="stylesheet"
-        />
         {/* Theme init (prevents flash) */}
         <script
           dangerouslySetInnerHTML={{
@@ -67,8 +88,13 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-screen flex flex-col antialiased">
+        <a href="#main" className="skip-link">
+          Skip to content
+        </a>
         <Header />
-        <main className="flex-1">{children}</main>
+        <main id="main" className="flex-1">
+          {children}
+        </main>
         <Footer />
       </body>
     </html>
