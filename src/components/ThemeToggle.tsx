@@ -1,37 +1,30 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { Moon, Sun } from "lucide-react";
 
+/**
+ * The inline script in the root layout already sets `.dark` on <html> before
+ * first paint, so the correct icon can be chosen in CSS from that class. That
+ * avoids holding the theme in React state, which previously meant rendering a
+ * blank placeholder until mount and then swapping the icon in — a visible
+ * flash on every page load, and a hydration mismatch risk besides.
+ */
 export function ThemeToggle() {
-  const [dark, setDark] = useState(false);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-    const stored = localStorage.getItem("theme");
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    const isDark = stored === "dark" || (!stored && prefersDark);
-    setDark(isDark);
-    document.documentElement.classList.toggle("dark", isDark);
-  }, []);
-
   const toggle = () => {
-    const next = !dark;
-    setDark(next);
-    document.documentElement.classList.toggle("dark", next);
-    localStorage.setItem("theme", next ? "dark" : "light");
+    const isDark = document.documentElement.classList.toggle("dark");
+    localStorage.setItem("theme", isDark ? "dark" : "light");
   };
-
-  if (!mounted) return <div className="w-9 h-9" />;
 
   return (
     <button
+      type="button"
       onClick={toggle}
-      aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}
-      className="w-9 h-9 flex items-center justify-center rounded-lg border border-[var(--border-c)] hover:bg-[var(--surface)] transition-colors cursor-pointer"
+      aria-label="Toggle dark mode"
+      title="Toggle dark mode"
+      className="w-9 h-9 flex items-center justify-center rounded-lg border border-[var(--border-c)] text-[var(--muted)] hover:text-[var(--fg)] hover:bg-[var(--surface)] transition-colors cursor-pointer"
     >
-      {dark ? <Sun size={16} /> : <Moon size={16} />}
+      <Moon size={16} className="block dark:hidden" aria-hidden="true" />
+      <Sun size={16} className="hidden dark:block" aria-hidden="true" />
     </button>
   );
 }

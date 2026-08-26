@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { getAllPosts, getAllCategories } from "@/lib/posts";
-import { ArticleCard } from "@/components/ArticleCard";
+import { BlogList } from "@/components/BlogList";
 
 export const metadata: Metadata = {
   title: "Blog",
@@ -23,32 +23,7 @@ export default function BlogPage() {
         </p>
       </div>
 
-      {categories.length > 0 && (
-        <div className="flex flex-wrap gap-2 mb-8 animate-fade-up anim-d1">
-          <span className="px-3 py-1 text-xs font-medium rounded-full bg-[var(--accent)] text-white">
-            All
-          </span>
-          {categories.map((cat) => (
-            <span
-              key={cat}
-              className="px-3 py-1 text-xs font-medium rounded-full border border-[var(--border-c)] text-[var(--muted)] hover:border-[var(--accent)] hover:text-[var(--accent)] transition-colors cursor-pointer"
-            >
-              {cat}
-            </span>
-          ))}
-        </div>
-      )}
-
-      <div className="flex flex-col gap-4 animate-fade-up anim-d2">
-        {posts.length > 0 ? (
-          posts.map((post) => <ArticleCard key={post.slug} post={post} />)
-        ) : (
-          <div className="text-center py-16 text-[var(--muted)]">
-            <p className="text-lg mb-2">No articles yet</p>
-            <p className="text-sm">Check back soon — new content is on the way.</p>
-          </div>
-        )}
-      </div>
+      <BlogList posts={posts} categories={categories} />
     </div>
   );
 }

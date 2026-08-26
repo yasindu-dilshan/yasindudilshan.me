@@ -52,7 +52,7 @@ export default function Home() {
 
           <Link
             href="/blog"
-            className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-white bg-[var(--accent)] rounded-lg hover:opacity-90 transition-opacity"
+            className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-[var(--accent-fg)] bg-[var(--accent)] rounded-lg hover:opacity-90 transition-opacity"
           >
             Read the blog
             <ArrowRight size={14} />
@@ -120,7 +120,7 @@ export default function Home() {
                 placeholder="you@email.com"
                 className="flex-1 sm:w-44 px-3 py-2 text-xs rounded-lg border border-[var(--border-c)] bg-[var(--surface)] text-[var(--fg)] outline-none focus:border-[var(--accent)] transition-colors"
               />
-              <button className="px-4 py-2 text-xs font-semibold text-white bg-[var(--accent)] rounded-lg hover:opacity-90 transition-opacity whitespace-nowrap">
+              <button className="px-4 py-2 text-xs font-semibold text-[var(--accent-fg)] bg-[var(--accent)] rounded-lg hover:opacity-90 transition-opacity whitespace-nowrap">
                 Subscribe
               </button>
             </div>
