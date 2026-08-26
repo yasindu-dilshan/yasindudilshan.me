@@ -1,11 +1,10 @@
 import Image from "next/image";
+import { avatarImage } from "@/lib/avatar";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { getAllPosts } from "@/lib/posts";
 import { siteConfig } from "@/lib/config";
 import { ArticleCard } from "@/components/ArticleCard";
-
-const skills = ["Java", "Spring Boot", "Apache Kafka", "Redis", "PostgreSQL", "AWS"];
 
 const stats = [
   { value: "3+", label: "Years in fintech engineering" },
@@ -19,14 +18,15 @@ export default function Home() {
   return (
     <div className="max-w-3xl mx-auto px-6">
       {/* Hero */}
-      <section className="pt-16 pb-14 flex flex-col sm:flex-row items-start gap-8 animate-fade-up">
+      <section className="pt-16 pb-14 flex flex-col sm:flex-row items-start sm:items-center gap-8 animate-fade-up">
         <div className="flex-shrink-0 flex flex-col items-center gap-3">
           <div className="relative w-32 h-32 rounded-full overflow-hidden border-[3px] border-[var(--border-c)] shadow-sm">
             <Image
-              src="/images/avatar.jpg"
+              src={avatarImage}
+              quality={95}
               alt={siteConfig.name}
               fill
-              className="object-cover object-[center_20%]"
+              className="object-cover"
               sizes="128px"
               priority
             />
@@ -39,31 +39,16 @@ export default function Home() {
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
               <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
             </span>
-            <span className="text-xs font-semibold uppercase tracking-wider text-[var(--accent)]">
-              Backend Engineer &middot; Fintech
+            <span className="text-xs font-semibold tracking-wide text-[var(--accent)]">
+              Senior Software Engineer &middot; Fintech
             </span>
           </div>
 
-          <h1 className="font-heading text-3xl sm:text-4xl leading-tight tracking-tight mb-4">
+          <h1 className="font-heading text-3xl sm:text-4xl leading-tight tracking-tight mb-6">
             Building reliable systems{" "}
             <br className="hidden sm:block" />
             for <span className="text-[var(--accent)]">global markets</span>
           </h1>
-
-          <p className="text-[var(--muted)] leading-relaxed mb-5 max-w-lg">
-            {siteConfig.author.bio}
-          </p>
-
-          <div className="flex flex-wrap gap-2 mb-6">
-            {skills.map((skill) => (
-              <span
-                key={skill}
-                className="px-3 py-1 text-xs font-medium font-code rounded-full border border-[var(--border-c)] text-[var(--muted)] bg-[var(--surface)]"
-              >
-                {skill}
-              </span>
-            ))}
-          </div>
 
           <Link
             href="/blog"

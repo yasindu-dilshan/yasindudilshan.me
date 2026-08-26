@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import { avatarImage } from "@/lib/avatar";
 import Link from "next/link";
 import { Mail, ExternalLink } from "lucide-react";
 import { GitHubIcon, LinkedInIcon } from "@/components/SocialIcons";
@@ -56,10 +57,11 @@ export default function AboutPage() {
       <div className="flex flex-col sm:flex-row items-start gap-8 mb-12 animate-fade-up">
         <div className="relative w-36 h-36 sm:w-44 sm:h-44 rounded-2xl overflow-hidden border-[3px] border-[var(--border-c)] shadow-sm flex-shrink-0">
           <Image
-              src="/images/avatar.jpg"
+              src={avatarImage}
+              quality={95}
             alt={siteConfig.name}
             fill
-            className="object-cover object-[center_20%]"
+            className="object-cover"
             sizes="176px"
             priority
           />
@@ -68,11 +70,15 @@ export default function AboutPage() {
           <h1 className="font-heading text-3xl tracking-tight mb-2">
             About me
           </h1>
-          <p className="text-lg text-[var(--muted)] leading-relaxed mb-4">
-            I&apos;m Yasindu Dilshan, a senior software engineer at{" "}
-            <span className="text-[var(--fg)] font-medium">GTN Tech </span>  in
-            Sri Lanka, where I work on the Price &amp; Market Backend Team
-            building systems that power global trading infrastructure.
+          <p className="text-lg text-[var(--muted)] leading-relaxed mb-4 text-justify hyphens-auto">
+            Software Engineer with 3+ years building high-throughput,
+            distributed, event-driven systems for financial markets.
+            Specializes in Java/Spring Boot microservices, Kafka streaming,
+            Redis-backed data distribution, and AWS cloud infrastructure (S3,
+            MSK, ElastiCache). Currently Senior Software Engineer at{" "}
+            <span className="text-[var(--fg)] font-medium">GTN Tech</span>,
+            owning system architecture from design through production
+            deployment on mission-critical trading infrastructure.
           </p>
           <div className="flex gap-3">
             <Link
@@ -99,37 +105,8 @@ export default function AboutPage() {
         </div>
       </div>
 
-      {/* Story */}
-      <section className="mb-12 animate-fade-up anim-d1">
-        <h2 className="font-heading text-xl mb-4">
-          My story
-        </h2>
-        <div className="space-y-4 text-[var(--muted)] leading-relaxed">
-          <p>
-            I graduated with First Class Honours from the University of Moratuwa
-            — Sri Lanka&apos;s top engineering university — with a 3.77/4.2 GPA in
-            Computer Science &amp; Engineering. I was on the Dean&apos;s List for 6 out
-            of 8 semesters.
-          </p>
-          <p>
-            My journey at GTN started as an intern in 2021. What began as working
-            on wrapper components quickly evolved into designing full
-            microservices architectures. I was promoted to Senior Software
-            Engineer in May 2026, owning projects end-to-end — from requirements
-            analysis through production deployment.
-          </p>
-          <p>
-            I&apos;m passionate about solving complex backend challenges:
-            event-driven architectures, real-time data processing, and building
-            systems that are reliable at scale. Every day, the code I write
-            handles millions of financial data records flowing through global
-            stock exchanges.
-          </p>
-        </div>
-      </section>
-
       {/* Experience */}
-      <section className="mb-12 animate-fade-up anim-d2">
+      <section className="mb-12 animate-fade-up anim-d1">
         <h2 className="font-heading text-xl mb-6">
           Experience
         </h2>
@@ -156,7 +133,7 @@ export default function AboutPage() {
       </section>
 
       {/* Tech Stack */}
-      <section className="mb-12 animate-fade-up anim-d3">
+      <section className="mb-12 animate-fade-up anim-d2">
         <h2 className="font-heading text-xl mb-4">
           Tech stack
         </h2>
@@ -178,7 +155,7 @@ export default function AboutPage() {
       </section>
 
       {/* Publication */}
-      <section className="mb-12 animate-fade-up anim-d4">
+      <section className="mb-12 animate-fade-up anim-d3">
         <h2 className="font-heading text-xl mb-4">
           Publication
         </h2>

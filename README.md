@@ -13,12 +13,14 @@ npm run build      # Production build
 ## Project Structure
 
 ```
-├── content/blog/          # Blog articles (MDX files)
-│   ├── kafka-consumer-lag-high-throughput.mdx
-│   ├── etag-caching-spring-boot-financial-apis.mdx
-│   └── intern-to-project-owner-career-growth.mdx
-├── public/images/         # Static images
-│   └── avatar.jpg         # ⚠️ REPLACE with your actual photo
+├── content/blog/          # Blog articles (MDX files), one per post
+├── public/images/
+│   ├── site/              # Site-wide identity assets
+│   │   └── avatar.png     # Profile photo (imported via src/lib/avatar.ts)
+│   └── blog/              # Per-article images, one folder per slug
+│       └── <slug>/
+│           ├── cover.png  # Card thumbnail (any aspect, never cropped)
+│           └── *.png      # Inline images used in the article body
 ├── src/
 │   ├── app/               # Next.js App Router pages
 │   │   ├── page.tsx       # Homepage
@@ -45,7 +47,7 @@ npm run build      # Production build
 ## First Steps After Cloning
 
 ### 1. Replace your photo
-Replace `public/images/avatar.jpg` with your professional photo (same as LinkedIn/GitHub).
+Replace `public/images/site/avatar.png` with your professional photo (same as LinkedIn/GitHub).
 Recommended: 512x512px minimum, JPEG or WebP.
 
 ### 2. Update site config
@@ -60,6 +62,7 @@ title: "Your Article Title"
 description: "A brief description for SEO and social cards."
 date: "2026-04-15"
 category: "System Design"
+coverImage: "/images/blog/your-article-slug/cover.png"
 tags: ["kafka", "java", "distributed-systems"]
 featured: false
 ---
@@ -67,7 +70,39 @@ featured: false
 Your article content in Markdown...
 ```
 
-### 4. Deploy to Vercel
+### 4. Adding images to an article
+
+Images live in a folder named after the article slug:
+
+```
+public/images/blog/<slug>/cover.png     # card thumbnail (.jpg also fine)
+public/images/blog/<slug>/diagram.png   # inline image
+```
+
+Reference them from MDX with an absolute path (`public/` is the web root):
+
+```mdx
+![A diagram](/images/blog/<slug>/diagram.png)
+```
+
+**Card thumbnails.** Set `coverImage` in the frontmatter to show a thumbnail on
+the right of the article card, Medium-style. Posts without one fall back to a
+category-tinted tile, so cards keep a consistent shape either way.
+
+- **Shape:** any aspect ratio. The card sets the width and lets the height
+  follow the image's own ratio, so nothing is cropped and there is no matte to
+  show through in dark mode. Intrinsic size is read from the file header at
+  build time by `src/lib/imageSize.ts` — no frontmatter bookkeeping needed.
+- **Size:** ~1280px on the long edge is plenty. Cards render at 224px wide on
+  desktop and full-bleed (up to ~640px) on mobile; larger files just sit in
+  git, since Next downscales and serves WebP at the size actually needed.
+- **Format:** PNG for diagrams generated losslessly, JPEG if the source is
+  already JPEG. Either way Next re-encodes to WebP for delivery.
+- **Replacing one:** optimized images are served `immutable`, so overwriting a
+  cover under the same filename leaves stale copies in visitors' browser caches.
+  Give the new file a different name and update `coverImage`.
+
+### 5. Deploy to Vercel
 1. Push to GitHub
 2. Import project at [vercel.com/new](https://vercel.com/new)
 3. Add custom domain in Vercel dashboard
