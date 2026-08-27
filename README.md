@@ -17,6 +17,7 @@ npm run build      # Production build
 ├── public/images/
 │   ├── site/              # Site-wide identity assets
 │   │   └── avatar.png     # Profile photo (imported via src/lib/avatar.ts)
+│   ├── projects/          # Project figures, one folder per project slug
 │   └── blog/              # Per-article images, one folder per slug
 │       └── <slug>/
 │           ├── cover.png  # Card thumbnail (any aspect, never cropped)

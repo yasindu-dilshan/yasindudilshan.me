@@ -44,11 +44,25 @@ export default function Home() {
             </span>
           </div>
 
-          <h1 className="font-heading text-3xl sm:text-4xl leading-tight tracking-tight mb-6">
+          <h1 className="font-heading text-3xl sm:text-4xl leading-tight tracking-tight mb-4">
             Building reliable systems{" "}
             <br className="hidden sm:block" />
             for <span className="text-[var(--accent)]">global markets</span>
           </h1>
+
+          {/* First-impression intro: the headline alone never names the site's
+              owner. Kept short and distinct from the About page's paragraph so
+              a visitor who reads both isn't served the same sentence twice. */}
+          <p className="text-[var(--muted)] leading-relaxed mb-6 max-w-lg">
+            Hi, I&apos;m{" "}
+            <span className="text-[var(--fg)] font-medium">
+              Yasindu Dilshan
+            </span>{" "}
+            — a Senior Software Engineer on GTN Tech&apos;s Price &amp; Market
+            Backend team. I build the event-driven pipelines and APIs that
+            keep financial data moving reliably at scale, and write about
+            what I learn along the way.
+          </p>
 
           <Link
             href="/blog"
